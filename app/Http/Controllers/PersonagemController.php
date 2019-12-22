@@ -14,7 +14,9 @@ class PersonagemController extends Controller
      */
     public function index()
     {
-        //
+        $personagem= Personagem::all();
+        $personagem->load('arma');
+        return response()->json($personagem);
     }
 
 
@@ -37,7 +39,8 @@ class PersonagemController extends Controller
      */
     public function show(Personagem $personagem)
     {
-        //
+        $personagem->load('arma');
+        return response()->json($personagem);
     }
 
 
