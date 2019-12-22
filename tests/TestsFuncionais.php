@@ -7,9 +7,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 
-class TestAtributosDosPersonagens extends TestCase
+class TestsFuncionais extends TestCase
 {
     /**
+     * Teste funcional:
+     *
      * Testa se os atributos dos personagens Humano e Orc estão corretos.
      *
      * @return void
