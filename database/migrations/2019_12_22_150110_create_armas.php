@@ -21,6 +21,23 @@ class CreateArmas extends Migration
             $table->integer('qnt_lados_dado');
             $table->timestamps();
         });
+
+        DB::table('armas')->insert(
+            array(
+                array(
+                    'nome' => 'Espada Longa',
+                    'ataque' => 2,
+                    'defesa' => 1,
+                    'qnt_lados_dado' => 6,
+                ),
+                array(
+                    'nome' => 'Clava',
+                    'ataque' => 1,
+                    'defesa' => 0,
+                    'qnt_lados_dado' => 8
+                )
+            )
+        );
     }
 
     /**
