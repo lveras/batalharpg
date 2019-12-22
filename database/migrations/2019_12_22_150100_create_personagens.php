@@ -20,8 +20,6 @@ class CreatePersonagens extends Migration
             $table->integer('forca');
             $table->integer('agilidade');
 
-            $table->integer('arma_id')->unsigned();
-            $table->foreign('arma_id')->references('id')->on('armas');
             $table->timestamps();
         });
 
@@ -32,14 +30,12 @@ class CreatePersonagens extends Migration
                     'vida' => 12,
                     'forca' => 1,
                     'agilidade' => 2,
-                    'arma_id' => 1
                 ),
                 array(
                     'nome' => 'Orc',
                     'vida' => 20,
                     'forca' => 2,
                     'agilidade' => 0,
-                    'arma_id' => 2
                 )
             ]
         );

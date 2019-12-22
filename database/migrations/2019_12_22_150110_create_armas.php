@@ -20,7 +20,15 @@ class CreateArmas extends Migration
             $table->integer('defesa');
             $table->integer('qnt_lados_dado');
             $table->timestamps();
+
+            $table->unsignedBigInteger('personagem_id')->nullable();
+            $table->foreign('personagem_id')
+                ->references('id')
+                ->on('personagens');
         });
+
+
+
 
         DB::table('armas')->insert(
             array(
@@ -29,12 +37,18 @@ class CreateArmas extends Migration
                     'ataque' => 2,
                     'defesa' => 1,
                     'qnt_lados_dado' => 6,
+                    'personagem_id' => DB::table('personagens')
+                        ->where('nome', 'Humano')
+                        ->pluck('id')[0]
                 ),
                 array(
                     'nome' => 'Clava',
                     'ataque' => 1,
                     'defesa' => 0,
-                    'qnt_lados_dado' => 8
+                    'qnt_lados_dado' => 8,
+                    'personagem_id' => DB::table('personagens')
+                        ->where('nome', 'Humano')
+                        ->pluck('id')[0]
                 )
             )
         );
