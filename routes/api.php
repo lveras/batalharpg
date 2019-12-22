@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('personagem', 'PersonagemController');
-Route::resource('arma', 'ArmaController');
+Route::resource('batalha', 'BatalhaController');
