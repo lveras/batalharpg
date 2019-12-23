@@ -67,4 +67,9 @@ class FuncionaisTest extends TestCase
                     "defesa" => "0", "qnt_lados_dado" => "8"],
         ]);
     }
+
+    public function testBatalha()
+    {
+
+    }
 }
