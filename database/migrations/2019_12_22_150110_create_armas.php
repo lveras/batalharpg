@@ -19,8 +19,6 @@ class CreateArmas extends Migration
             $table->integer('ataque');
             $table->integer('defesa');
             $table->integer('qnt_lados_dado');
-            $table->timestamps();
-
             $table->unsignedBigInteger('personagem_id')->nullable();
             $table->foreign('personagem_id')
                 ->references('id')
@@ -47,7 +45,7 @@ class CreateArmas extends Migration
                     'defesa' => 0,
                     'qnt_lados_dado' => 8,
                     'personagem_id' => DB::table('personagens')
-                        ->where('nome', 'Humano')
+                        ->where('nome', 'Orc')
                         ->pluck('id')[0]
                 )
             )

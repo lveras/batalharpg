@@ -19,8 +19,6 @@ class CreatePersonagens extends Migration
             $table->integer('vida');
             $table->integer('forca');
             $table->integer('agilidade');
-
-            $table->timestamps();
         });
 
         DB::table('personagens')->insert(
