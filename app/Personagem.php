@@ -12,5 +12,9 @@ class Personagem extends Model
     public function arma(){
         return $this->hasOne(Arma::class);
     }
+
+    public function batalhas(){
+        return $this->hasMany(Batalha::class);
+    }
 }
 
