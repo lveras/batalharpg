@@ -21,27 +21,22 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
 
-    <style type = "text/css">
-        body {
-            background-image: url("img/background.jpeg");
-        }
-        p {
-            background-color: white;
-            background-color: rgba(255, 255, 255, .85);
-        }
-    </style>
+
 
     <title>Batalha - Orc vs Humano!</title>
 </head>
 <body>
 
 <div class="container">
-    <div class="col-md-6">
-        <div class="configdiv">
-            <img src="img/background.jpeg">
-        </div>
-    </div>
-    </div>
+    <section class="h-100">
+        <header class="container h-100">
+            <div class="d-flex align-items-center justify-content-center h-100">
+                <div class="d-flex flex-column">
+                    <img src="img/background.jpeg">
+                </div>
+            </div>
+        </header>
+    </section>
 </div>
 
 
