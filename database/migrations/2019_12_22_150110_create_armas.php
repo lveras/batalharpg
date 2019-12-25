@@ -25,9 +25,6 @@ class CreateArmas extends Migration
                 ->on('personagens');
         });
 
-
-
-
         DB::table('armas')->insert(
             array(
                 array(

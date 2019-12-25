@@ -18,14 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', 'BatalhaController@index');
-Route::get('/batalha/create', 'BatalhaController@create');
-
-Route::get('batalha/t/{token}', 'BatalhaController@show', function ($token){
-    return redirect()->action('BatalhaController@show', [$token]);
+Route::prefix('v1')->group(function (){
+    Route::get('batalha/', 'BatalhaController@create');
+    Route::get('batalha/{token}', 'BatalhaController@show');
+    Route::get('batalha/roll/{token}', 'BatalhaController@roll');
 });
 
-Route::get('batalha/roll/{token}', 'BatalhaController@roll', function ($token){
-    return redirect()->action('BatalhaController@roll', [$token]);
-});
 

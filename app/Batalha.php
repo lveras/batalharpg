@@ -3,9 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
-use App\Personagem;
-use PhpParser\Node\Scalar\String_;
+
 
 
 class Batalha extends Model
