@@ -8,13 +8,13 @@ use App\Personagem;
 use App\Rodada;
 use Illuminate\Database\Eloquent\Model;
 
+define('DADO_PADRAO', 20);
 
 class BatalhaRepository
 {
     private $model;
     private $p1;
     private $p2;
-    private $dado_padrao;
 
     public function __construct(Model $model)
     {
@@ -22,11 +22,10 @@ class BatalhaRepository
         $this->model->load('p1')->load('p2');
         $this->p1 = $this->model->p1->toArray()[0];
         $this->p2 = $this->model->p2->toArray()[0];
-        $this->dado_padrao = 20;
     }
 
     public function vidaRestante(){
-        $danos = $this->model->rodadas->where('acao', 3);
+        $danos = $this->model->rodadas->where('acao', 'dano');
 
         $vida_p1 = $this->p1['vida'] - $danos->where('atacante', $this->p1['id'])
                                              ->sum('valor_dado_p1');
@@ -67,13 +66,13 @@ class BatalhaRepository
         $p1_agi = $this->p1['agilidade'];
         $p2_agi = $this->p2['agilidade'];
 
-        $dado1 = $p1_agi + $this->rolarDado($this->dado_padrao);
-        $dado2 = $p2_agi + $this->rolarDado($this->dado_padrao);
+        $dado1 = $p1_agi + $this->rolarDado(DADO_PADRAO);
+        $dado2 = $p2_agi + $this->rolarDado(DADO_PADRAO);
 
         while($dado1 == $dado2){
             $this->criaRodada($dado1, $dado2, 1);
-            $dado1 = $p1_agi + $this->rolarDado($this->dado_padrao);
-            $dado2 = $p2_agi + $this->rolarDado($this->dado_padrao);
+            $dado1 = $p1_agi + $this->rolarDado(DADO_PADRAO);
+            $dado2 = $p2_agi + $this->rolarDado(DADO_PADRAO);
         }
 
         $this->criaRodada($dado1, $dado2, 'iniciativa');
@@ -86,8 +85,8 @@ class BatalhaRepository
 
     private function ataque(Array $p)
     {
-        $dado1 = $p[0]['agilidade'] + $this->rolarDado($this->dado_padrao) + $p[0]['arma']['ataque'];
-        $dado2 = $p[1]['agilidade'] + $this->rolarDado($this->dado_padrao) + $p[1]['arma']['ataque'];
+        $dado1 = $p[0]['agilidade'] + $this->rolarDado(DADO_PADRAO) + $p[0]['arma']['ataque'];
+        $dado2 = $p[1]['agilidade'] + $this->rolarDado(DADO_PADRAO) + $p[1]['arma']['ataque'];
 
         $this->criaRodada($dado1, $dado2, 'ataque', intval($p[0]['id']));
     }
@@ -159,17 +158,14 @@ class BatalhaRepository
         switch ($acao) {
             case 'iniciativa':
                 $this->coordenaIniciativa();
-
                 break;
 
             case 'ataque':
                 $this->coordenaAtaque();
-
                 break;
 
             case 'dano':
                 $this->coordenaDano();
-
                 break;
 
             case 'sem_acao':
