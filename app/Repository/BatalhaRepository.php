@@ -14,6 +14,7 @@ class BatalhaRepository
     private $model;
     private $p1;
     private $p2;
+    private $dado_padrao;
 
     public function __construct(Model $model)
     {
@@ -21,6 +22,7 @@ class BatalhaRepository
         $this->model->load('p1')->load('p2');
         $this->p1 = $this->model->p1->toArray()[0];
         $this->p2 = $this->model->p2->toArray()[0];
+        $this->dado_padrao = 20;
     }
 
     public function vidaRestante(){
@@ -60,32 +62,32 @@ class BatalhaRepository
         $this->model->rodadas()->save($rodada);
     }
 
-    private function rolarDado(int $lados): int
-    {
-        return rand(1, $lados);
-    }
-
     private function iniciativa()
     {
         $p1_agi = $this->p1['agilidade'];
         $p2_agi = $this->p2['agilidade'];
 
-        $dado1 = $p1_agi + $this->rolarDado(20);
-        $dado2 = $p2_agi + $this->rolarDado(20);
+        $dado1 = $p1_agi + $this->rolarDado($this->dado_padrao);
+        $dado2 = $p2_agi + $this->rolarDado($this->dado_padrao);
 
         while($dado1 == $dado2){
             $this->criaRodada($dado1, $dado2, 1);
-            $dado1 = $p1_agi + $this->rolarDado(20);
-            $dado2 = $p2_agi + $this->rolarDado(20);
+            $dado1 = $p1_agi + $this->rolarDado($this->dado_padrao);
+            $dado2 = $p2_agi + $this->rolarDado($this->dado_padrao);
         }
 
         $this->criaRodada($dado1, $dado2, 'iniciativa');
     }
 
+    private function rolarDado(int $lados): int
+    {
+        return rand(1, $lados);
+    }
+
     private function ataque(Array $p)
     {
-        $dado1 = $p[0]['agilidade'] + $this->rolarDado(20) + $p[0]['arma']['ataque'];
-        $dado2 = $p[1]['agilidade'] + $this->rolarDado(20) + $p[1]['arma']['ataque'];
+        $dado1 = $p[0]['agilidade'] + $this->rolarDado($this->dado_padrao) + $p[0]['arma']['ataque'];
+        $dado2 = $p[1]['agilidade'] + $this->rolarDado($this->dado_padrao) + $p[1]['arma']['ataque'];
 
         $this->criaRodada($dado1, $dado2, 'ataque', intval($p[0]['id']));
     }
@@ -97,6 +99,49 @@ class BatalhaRepository
         $this->criaRodada($dano, 0, 'dano', $atacante->id);
     }
 
+    private function coordenaIniciativa()
+    {
+        $ult_rodada = $this->ultimaRodada();
+
+        if ($ult_rodada->valor_dado_p1 > $ult_rodada->valor_dado_p2){
+            $this->ataque([$this->p1, $this->p2]);
+        }
+
+        else{
+            $this->ataque([$this->p2, $this->p1]);
+        }
+    }
+
+    private function coordenaAtaque()
+    {
+        $atacante = (new Personagem())->find($this->ultimaRodada()->atacante);
+        $this->dano($atacante);
+    }
+
+    private function coordenaDano()
+    {
+        $pen_rodada = $this->model->rodadas->where(
+            'num_rodada', $this->ultimaRodada()->num_rodada-1
+        )->first();
+
+        if ($pen_rodada->acao == 2){
+            $ult_atacante = $this->ultimaRodada()->atacante;
+
+            if ($ult_atacante == $this->p1['id']){
+                $atacante = $this->p2['id'];
+            }
+
+            else{
+                $atacante = $this->p1['id'];
+            }
+
+            $this->dano($atacante);
+
+            return;
+        }
+        $this->iniciativa();
+    }
+
     private function controlaAcoes()
     {
         $vidas = $this->vidaRestante();
@@ -104,32 +149,27 @@ class BatalhaRepository
             return $this->model;
         }
 
-        $acao = ($this->model->rodadas->count() != 0) ? $this->ultimaRodada()->acao : 'sem_acao';
+        if ($this->model->rodadas->count() != 0){
+            $acao = $this->ultimaRodada()->acao;
+        }
+        else{
+            $acao = 'sem_acao';
+        }
+
         switch ($acao) {
             case 'iniciativa':
-                $ult_rodada = $this->ultimaRodada();
-                $this->ataque(
-                    ($ult_rodada->valor_dado_p1 > $ult_rodada->valor_dado_p2)
-                    ? [$this->p1, $this->p2] : [$this->p2, $this->p1]
-                );
+                $this->coordenaIniciativa();
+
                 break;
 
             case 'ataque':
-                $atacante = (new Personagem())->find($this->ultimaRodada()->atacante);
-                $this->dano($atacante);
+                $this->coordenaAtaque();
+
                 break;
 
             case 'dano':
-                $pen_rodada = $this->model->rodadas->where('num_rodada', $this->ultimaRodada()->num_rodada-1)->first();
-                if ($pen_rodada->acao == 2){
-                    $ult_atacante = $this->ultimaRodada()->atacante;
-                    $atacante = (new Personagem())->find(
-                        ($ult_atacante == $this->p1['id']) ? $this->p2['id'] : $this->p1['id']
-                    );
-                    $this->dano($atacante);
-                    break;
-                }
-                $this->iniciativa();
+                $this->coordenaDano();
+
                 break;
 
             case 'sem_acao':
