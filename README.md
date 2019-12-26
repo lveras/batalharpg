@@ -4,6 +4,17 @@ Serviço web REST que simula uma batalha medieval de um jogo RPG em turnos.
 ## Dependências
 - php 7.2
 - Laravel 6.0
+- Docker
+- Docker Compose
+
+## Utilização da API via docker
+Com o docker e docker composer instalado, na pasta do projeto, executar:
+```shell script
+$ docker-compose build
+$ docker-compose up -d
+```
+
+No browser: http://localhost:8000/api/v1/batalha (não houve tempo para desenvolver o front-end)
 
 ## Endpoint
 O endpoint de conexão com a API REST JSON é: http://localhost:8000/api/v1/batalha/
