@@ -21,23 +21,6 @@ class CreatePersonagens extends Migration
             $table->integer('agilidade');
         });
 
-        DB::table('personagens')->insert(
-            [
-                array(
-                    'nome' => 'Humano',
-                    'vida' => 12,
-                    'forca' => 1,
-                    'agilidade' => 2,
-                ),
-                array(
-                    'nome' => 'Orc',
-                    'vida' => 20,
-                    'forca' => 2,
-                    'agilidade' => 0,
-                )
-            ]
-        );
-
     }
 
     /**
