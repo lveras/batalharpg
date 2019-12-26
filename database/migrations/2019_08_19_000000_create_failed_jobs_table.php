@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePersonagens extends Migration
+class CreateFailedJobsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreatePersonagens extends Migration
      */
     public function up()
     {
-        Schema::create('personagens', function (Blueprint $table) {
+        Schema::create('failed_jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('nome')->unique();
-            $table->integer('vida');
-            $table->integer('forca');
-            $table->integer('agilidade');
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->useCurrent();
         });
-
     }
 
     /**
@@ -30,6 +30,6 @@ class CreatePersonagens extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personagens');
+        Schema::dropIfExists('failed_jobs');
     }
 }

@@ -20,7 +20,7 @@ class CreateRodadas extends Migration
             $table->integer('acao');
             $table->integer('valor_dado_p1');
             $table->integer('valor_dado_p2');
-            $table->integer('dano')->nullable();
+            $table->integer('atacante')->nullable();
             $table->foreign('batalha_id')
                 ->references('id')
                 ->on('batalhas')
