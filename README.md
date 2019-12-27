@@ -81,7 +81,7 @@ Não se aplica. O sistema envia um token quando gerada a batalha ao acessar o li
     }
 }
 ```
-##Exibir batalha
+## Exibir batalha
 - Metodo: GET
 - URL: http://localhost:8000/api/v1/batalha/{token}
 - Exemplo de retorno:
