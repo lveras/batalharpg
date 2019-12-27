@@ -31,7 +31,7 @@ Todos os dados enviados e recebidos pela API estão e deverão ser em formato JS
 ## Autenticação
 Não se aplica. O sistema envia um token quando gerada a batalha ao acessar o link acima.
 
-##Criar Batalha
+## Criar Batalha
 - Método: GET
 - URL: http://localhost:8000/api/v1/batalha/
 - Exemplo de retorno
@@ -81,7 +81,7 @@ Não se aplica. O sistema envia um token quando gerada a batalha ao acessar o li
     }
 }
 ```
-##Exibir batalha
+## Exibir batalha
 - Metodo: GET
 - URL: http://localhost:8000/api/v1/batalha/{token}
 - Exemplo de retorno:
